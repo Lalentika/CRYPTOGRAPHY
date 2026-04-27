@@ -29,7 +29,76 @@ STEP-4: Multiply the two matrices to obtain the cipher text of length three.
 STEP-5: Combine all these groups to get the complete cipher text.
 
 ## PROGRAM 
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
 
+int keymat[3][3] = { {1,2,1}, {2,3,2}, {2,2,1} };
+int invkeymat[3][3] = { {-1,0,1}, {2,-1,0}, {-2,2,-1} };
+char key[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+char* encode(char a, char b, char c) {
+    static char ret[4];
+    int posa = a - 'A', posb = b - 'A', posc = c - 'A';
+
+    int x = posa*keymat[0][0] + posb*keymat[1][0] + posc*keymat[2][0];
+    int y = posa*keymat[0][1] + posb*keymat[1][1] + posc*keymat[2][1];
+    int z = posa*keymat[0][2] + posb*keymat[1][2] + posc*keymat[2][2];
+
+    ret[0] = key[(x % 26 + 26) % 26];
+    ret[1] = key[(y % 26 + 26) % 26];
+    ret[2] = key[(z % 26 + 26) % 26];
+    ret[3] = '\0';
+    return ret;
+}
+
+char* decode(char a, char b, char c) {
+    static char ret[4];
+    int posa = a - 'A', posb = b - 'A', posc = c - 'A';
+
+    int x = posa*invkeymat[0][0] + posb*invkeymat[1][0] + posc*invkeymat[2][0];
+    int y = posa*invkeymat[0][1] + posb*invkeymat[1][1] + posc*invkeymat[2][1];
+    int z = posa*invkeymat[0][2] + posb*invkeymat[1][2] + posc*invkeymat[2][2];
+
+    ret[0] = key[(x % 26 + 26) % 26];
+    ret[1] = key[(y % 26 + 26) % 26];
+    ret[2] = key[(z % 26 + 26) % 26];
+    ret[3] = '\0';
+    return ret;
+}
+
+int main() {
+    char msg[1000] = "ABHISHEK";
+    char enc[1000] = "";
+    char dec[1000] = "";
+
+    printf("Simulation of Hill Cipher\n");
+    printf("Input message : %s\n", msg);
+
+    for (int i = 0; msg[i]; i++)
+        msg[i] = toupper(msg[i]);
+
+    int n = strlen(msg) % 3;
+    if (n != 0)
+        for (int i = 0; i < 3 - n; i++)
+            strcat(msg, "X");
+
+    printf("Padded message : %s\n", msg);
+
+    for (int i = 0; i < strlen(msg); i += 3)
+        strcat(enc, encode(msg[i], msg[i+1], msg[i+2]));
+
+    printf("Encoded message : %s\n", enc);
+
+    for (int i = 0; i < strlen(enc); i += 3)
+        strcat(dec, decode(enc[i], enc[i+1], enc[i+2]));
+
+    printf("Decoded message : %s\n", dec);
+    return 0;
+}
 ## OUTPUT
 
+<img width="402" height="202" alt="image" src="https://github.com/user-attachments/assets/25b533fa-b456-4d85-9331-96a140b0b5d9" />
+
 ## RESULT
+The given code has been executed successfully.
