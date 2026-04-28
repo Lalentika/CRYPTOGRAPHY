@@ -2,7 +2,6 @@
 HILL CIPHER
 EX. NO: 1(C) AIM:
  
-
 IMPLEMENTATION OF HILL CIPHER
  
 ## To write a C program to implement the hill cipher substitution techniques.
@@ -23,7 +22,7 @@ STEP-5: Combine all these groups to get the complete cipher text.
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
+ 
 #define MOD 26
 
 // Function to compute determinant of a matrix
